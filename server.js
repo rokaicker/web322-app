@@ -36,18 +36,33 @@ app.get("/about", (req,res)=>{
     res.sendFile(path.join(__dirname,"/views/about.html"));
 });
 
+// This will fetch all the published posts
 app.get("/blog", (req,res) => {
-    res.send("<h1>This confirms that the route to /blog is set up correctly </h1>")
+    blogService.getPublishedPosts().then((data) => {
+        res.json(data);
+    }).catch((err) => {
+        res.json({message: err});
+    })
+
 });
 
+// This will fetch all posts, regardless of publication status
 app.get("/posts", (req,res) => {
-    res.send("<h1>This confirms that the route to /posts is set up correctly</h1>")
+    blogService.getAllPosts().then((data) => {
+        res.json(data);
+    }).catch((err) => {
+        res.json({message: err});
+    })
 });
 
+// This will fetch the different post categories
 app.get("/categories", (req,res) => {
-    res.send("<h1>This confirms that the route to /categories is set up correctly</h1>")
+    blogService.getCategories().then((data) => {
+        res.json(data);
+    }).catch((err) => {
+        res.json({message: err});
+    })
 });
-
 
 // Send 404 status if user is trying to go an invalid route
 app.use((req,res) => {
