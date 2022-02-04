@@ -3,7 +3,7 @@ const app = express();
 app.use(express.static("public")); // Allows us to declare a folder as "static" --> unchanging files that are required for the site content. 
 
 const path = require("path");
-const blogService = require("./blog-service.js")
+const blogService = require(__dirname + "/blog-service.js")
 var HTTP_PORT = process.env.PORT || 8080;
 
 
@@ -13,7 +13,6 @@ function onHttpStart(){
     console.log("Express http server listening on: " + HTTP_PORT);
 }
 
-app.listen(HTTP_PORT, onHttpStart); // Displays port the server is listening on. Callback function "onHttpStart" is called once the "app" starts listening to the port.
 
 /*
 
@@ -55,3 +54,8 @@ app.use((req,res) => {
     res.status(404).send("Page Not Found");
 });
 
+blogService.initialize().then(() => {
+    app.listen(HTTP_PORT, onHttpStart); // Displays port the server is listening on. Callback function "onHttpStart" is called once the "app" starts listening to the port.
+}).catch((error) => {
+    console.error(err);                 // Displays error if there is one
+});
