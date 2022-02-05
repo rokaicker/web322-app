@@ -1,3 +1,16 @@
+/*********************************************************************************
+*  WEB322 – Assignment 02
+*  I declare that this assignment is my own work in accordance with Seneca  Academic Policy.  No part *  of this assignment has been copied manually or electronically from any other source 
+*  (including 3rd party web sites) or distributed to other students.
+* 
+*  Name: Rohan Kaicker Student ID: 119070217 Date: February 02, 2022
+*
+*  Online (Heroku) URL: https://rkaicker-web322-app.herokuapp.com/
+*
+*  GitHub Repository URL: https://github.com/rokaicker/web322-app
+*
+********************************************************************************/ 
+
 const express = require("express");
 const app = express();
 app.use(express.static("public")); // Allows us to declare a folder as "static" --> unchanging files that are required for the site content. 
