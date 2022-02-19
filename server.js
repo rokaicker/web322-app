@@ -74,14 +74,37 @@ app.get("/blog", (req,res) => {
 
 });
 
-// This will fetch all posts, regardless of publication status
+// This will fetch posts either based on category, date, or all posts 
 app.get("/posts", (req,res) => {
-    blogService.getAllPosts().then((data) => {
-        res.json(data);
+    if (req.query.category){
+        blogService.getPostsByCategory(req.query.category).then((data) => {
+            res.json({data});
+        }).catch((err) => {
+            res.json({messge: err});
+        })
+    } else if(req.query.minDate){
+        blogService.getPostsByMinDate(req.query.minDate).then((data) => {
+            res.json({data});
+        }).catch((err) => {
+            res.json({message: err});
+        })
+    } else {
+        blogService.getAllPosts().then((data) => {
+            res.json(data);
+        }).catch((err) => {
+            res.json({message: err});
+        })
+    }
+});
+
+// This will get posts based on the post ID value
+app.get("/posts:value",(req,res) => {
+    blogService.getPostById(req.params.value).then((data) => {
+        res.json({data});
     }).catch((err) => {
         res.json({message: err});
     })
-});
+})
 
 // This will fetch the different post categories
 app.get("/categories", (req,res) => {
@@ -123,12 +146,7 @@ app.post("/posts/add",upload.single("featureImage"), (req,res) => {
     }).then(() => {
         res.redirect("/posts");
     });
-    
 })
-
-
-
-
 
 
 // Send 404 status if user is trying to go an invalid route

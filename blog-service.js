@@ -70,3 +70,33 @@ module.exports.addPost = (postData) => {
         resolve(postData); 
     })
 }
+
+module.exports.getPostsByCategory = (category) => {
+    return new Promise((resolve,reject) => {
+        const postsByCategory = posts.filter(post => post.category == category);
+        if (postsByCategory.length == 0){
+            reject("No posts have been made with these category");
+        }
+        resolve(postsByCategory);
+    })
+};
+
+module.exports.getPostsByMinDate = (minDateStr) => {
+    return new Promise((resolve,reject) => {
+        const postByDate = posts.filter(post => new Date(post.postDate) >= new Date(minDateStr));
+        if (postByDate.length == 0){
+            reject("No posts have been made after the supplied date");
+        }
+        resolve(postByDate);
+    })
+};
+
+module.exports.getPostById = (id) => {
+    return new Promise((resolve,reject) => {
+        const postsByID = posts.filter(post => post.id == id);
+        if (postsByID.length == 0){
+            reject("No posts have been found with this id");
+        }
+        resolve(postsByID);
+    })
+}
