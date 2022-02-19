@@ -19,6 +19,21 @@ const path = require("path");
 const blogService = require(__dirname + "/blog-service.js")
 var HTTP_PORT = process.env.PORT || 8080;
 
+// Multer setup
+const multer = require("multer");
+const upload = multer();
+
+// Cloudinary Setup
+const cloudinary = require("cloudinary").v2;
+cloudinary.config({
+    cloud_name:"dydbpvpc6",
+    api_key:"894538757627284",
+    api_secret:"sRBj8fptXS5i9UJpvpiHJe9sGB8",
+    secure:true
+});
+
+const streamifier = require("streamifier");
+
 
 
 // Obtaining port app listening to
