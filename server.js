@@ -119,9 +119,11 @@ app.post("/posts/add",upload.single("featureImage"), (req,res) => {
     }
     upload(req).then((uploaded)=>{
         req.body.featureImage = uploaded.url;
-    })
-
-    res.redirect("/posts");
+        blogService.addPost(req.body);
+    }).then(() => {
+        res.redirect("/posts");
+    });
+    
 })
 
 
