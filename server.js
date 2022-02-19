@@ -77,6 +77,10 @@ app.get("/categories", (req,res) => {
     })
 });
 
+app.get("/posts/add", (req,res) => {
+    res.sendFile(path.join(__dirname, "/views/addPost.html"));
+});
+
 // Send 404 status if user is trying to go an invalid route
 app.use((req,res) => {
     res.status(404).send("Page Not Found");
