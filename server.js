@@ -36,7 +36,11 @@ const streamifier = require("streamifier");
 
 // Express Handlebars Setup
 const exphbs = require('express-handlebars');
-app.engine('.hbs', exphbs.engine({extname: '.hbs'}));
+app.engine('.hbs', exphbs.engine({
+    extname: '.hbs',
+    defaultLayout: 'main'
+}));
+
 app.set('view engine', 'hbs');
 
 
