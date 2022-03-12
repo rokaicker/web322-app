@@ -36,12 +36,13 @@ const streamifier = require("streamifier");
 
 // Express Handlebars Setup
 const exphbs = require('express-handlebars');
+const { appendFileSync } = require("fs");
 app.engine('.hbs', exphbs.engine({
     extname: '.hbs',
     defaultLayout: 'main'
 }));
 
-app.set('view engine', 'hbs');
+app.set('view engine', '.hbs');
 
 
 
@@ -62,6 +63,14 @@ app.METHOD(PATH,HANDLER) --> app = express instance, METHOD = HTTP request metho
 Note that the HANDLER function can be an anonymous arrow function. Handler functions = callback functions. 
 
 */
+
+// Fixing Navigation Bar
+app.use(function(req,res,next){
+    let route = req.path.substring(1);
+    app.locals.activeRoute = (route=="/") ? "/" : "/" + route.replace(/\/(.*)/,"");
+    app.locals.viewingCategory = req.query.category;
+    next();
+});
 
 // Redirect user to "/about" route
 app.get("/", (req,res)=>{
