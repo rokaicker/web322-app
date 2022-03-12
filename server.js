@@ -126,7 +126,7 @@ app.get("/categories", (req,res) => {
 
 // This will simply send the addPost.html file to the /posts/add route
 app.get("/posts/add", (req,res) => {
-    res.sendFile(path.join(__dirname, "/views/addPost.html"));
+    res.render(path.join(__dirname, "/views/addPost.html"));
 });
 
 app.post("/posts/add",upload.single("featureImage"), (req,res) => {
