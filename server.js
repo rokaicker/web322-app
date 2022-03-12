@@ -66,7 +66,7 @@ app.get("/", (req,res)=>{
 
 // Send the about.html file to display the webpage
 app.get("/about", (req,res)=>{
-    res.sendFile(path.join(__dirname,"/views/about.html"));
+    res.render(path.join(__dirname,"/views/about.hbs"));
 });
 
 // This will fetch all the published posts
