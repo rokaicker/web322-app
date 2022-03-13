@@ -34,6 +34,10 @@ cloudinary.config({
 
 const streamifier = require("streamifier");
 
+//  Strip-Js setup
+const stripJs = require('strip-js');
+
+
 // Express Handlebars Setup
 const exphbs = require('express-handlebars');
 const { appendFileSync } = require("fs");
@@ -52,6 +56,9 @@ app.engine('.hbs', exphbs.engine({
             } else {
                 return options.fn(this);
             }
+        },
+        safeHTML: function(context){
+            return stripJs(context);
         }
     }
 }));
