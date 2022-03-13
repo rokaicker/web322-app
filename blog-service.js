@@ -79,6 +79,7 @@ module.exports.addPost = (postData) => {
             postData.published = true;
         }
         postData.id = posts.length + 1;
+        postData.postDate = new Date().toISOString().slice(0,10);
         posts.push(postData);
         resolve(postData); 
     })
