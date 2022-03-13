@@ -110,21 +110,27 @@ app.get("/blog", (req,res) => {
 app.get("/posts", (req,res) => {
     if (req.query.category){
         blogService.getPostsByCategory(req.query.category).then((data) => {
-            res.json({data});
+            //res.json({data});
+            res.render("posts",{posts:data});
         }).catch((err) => {
-            res.json({messge: err});
+            //res.json({messge: err});
+            res.render("posts",{message:err});
         })
     } else if(req.query.minDate){
         blogService.getPostsByMinDate(req.query.minDate).then((data) => {
-            res.json({data});
+            //res.json({data});
+            res.render("posts",{posts:data});
         }).catch((err) => {
-            res.json({message: err});
+            //res.json({message: err});
+            res.render("posts",{message:err});
         })
     } else {
         blogService.getAllPosts().then((data) => {
-            res.json(data);
+            //res.json(data);
+            res.render("posts",{posts:data});
         }).catch((err) => {
-            res.json({message: err});
+            //res.json({message: err});
+            res.render("posts",{message:err});
         })
     }
 });

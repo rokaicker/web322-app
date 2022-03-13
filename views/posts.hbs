@@ -15,7 +15,13 @@
                 </thead>
                 <tbody>
                     {{#each posts}}
-
+                    <tr>
+                    <td>{{this.id}}</td>
+                    <td>{{this.title}}</td>
+                    <td>{{this.postDate}}</td>
+                    <td><a href="/posts?category={{this.category}}">{{this.category}}</a></td>
+                    <td>{{this.published}}</td>
+                    </tr>
                     {{/each}}
                 </tbody>
             </table>
