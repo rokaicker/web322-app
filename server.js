@@ -148,7 +148,7 @@ app.get('/blog', async (req, res) => {
     }
 
     // render the "blog" view with all of the data (viewData)
-    res.render("blog", {data: viewData})
+    res.render("blog", {data: viewData});
 
 });
 
@@ -183,9 +183,7 @@ app.get('/blog/:id', async (req, res) => {
 
     try{
         // Obtain the post by "id"
-        post = await blogService.getPostById(req.params.id);
-        viewData.post = post;
-        //console.log(viewData.post);
+        viewData.post = await blogService.getPostById(req.params.id);
     }catch(err){
         viewData.message = "no results"; 
     }
@@ -203,7 +201,6 @@ app.get('/blog/:id', async (req, res) => {
     // render the "blog" view with all of the data (viewData)
     res.render("blog", {data: viewData})
 });
-
 
 // This will fetch posts either based on category, date, or all posts 
 app.get("/posts", (req,res) => {
