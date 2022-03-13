@@ -2,6 +2,7 @@
     <section class="main col-md-9">
         {{#if data.post}}
         <article>
+            <p>{{data.post)}}</p>
             <h2>{{data.post.title}}</h2>
             <img src="{{data.post.featureImage}}" alt="feature Image" style="width:100%" />
             <br /><br />
@@ -26,7 +27,7 @@
 
         <ul class="list-group">
             {{#each data.posts}}
-                <a href="/blog/{{this.id}}?category={{this.category}}" class="list-group-item">{{this.title}}</a>
+                <a href="/blog/{{this.id}}?category={{../viewingCategory}}" class="list-group-item">{{this.title}}</a>
             {{/each}}
         </ul>
         {{/if}}
