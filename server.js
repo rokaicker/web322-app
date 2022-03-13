@@ -95,7 +95,7 @@ app.use(function(req,res,next){
 
 // Redirect user to "/about" route
 app.get("/", (req,res)=>{
-    res.redirect('/about');
+    res.redirect('/blog');
 });
 
 // Send the about.html file to display the webpage
@@ -287,7 +287,7 @@ app.post("/posts/add",upload.single("featureImage"), (req,res) => {
 
 // Send 404 status if user is trying to go an invalid route
 app.use((req,res) => {
-    res.status(404).send("Page Not Found");
+    res.status(404).render("404");
 });
 
 blogService.initialize().then(() => {
