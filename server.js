@@ -147,9 +147,11 @@ app.get("/posts:value",(req,res) => {
 // This will fetch the different post categories
 app.get("/categories", (req,res) => {
     blogService.getCategories().then((data) => {
-        res.json(data);
+        //res.json(data);
+        res.render("categories",{categories:data});
     }).catch((err) => {
-        res.json({message: err});
+        //res.json({message: err});
+        res.render("categories",{message:err});
     })
 });
 
