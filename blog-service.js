@@ -48,6 +48,19 @@ module.exports.getPublishedPosts = () => {
     })
 };
 
+module.exports.getPublishedPostsByCategory = (category) => {
+    return new Promise((resolve,reject) => {
+        var publishedCatPosts = posts.filter(post => {
+            return post.published == true && post.category == category;
+        });
+        if (publishedCatPosts.length == 0){
+            reject("No Published Posts Found With This Category!");
+        } else {
+            resolve(publishedCatPosts);
+        }
+    })
+}
+
 module.exports.getCategories = () => {
     return new Promise((resolve,reject) => {
         if(categories.length == 0){
