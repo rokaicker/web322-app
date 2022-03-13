@@ -59,7 +59,7 @@ module.exports.getPublishedPostsByCategory = (category) => {
             resolve(publishedCatPosts);
         }
     })
-}
+};
 
 module.exports.getCategories = () => {
     return new Promise((resolve,reject) => {
@@ -82,7 +82,7 @@ module.exports.addPost = (postData) => {
         posts.push(postData);
         resolve(postData); 
     })
-}
+};
 
 module.exports.getPostsByCategory = (category) => {
     return new Promise((resolve,reject) => {
@@ -112,4 +112,4 @@ module.exports.getPostById = (id) => {
         }
         resolve(postsByID);
     })
-}
+};
