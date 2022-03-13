@@ -2,8 +2,28 @@
     <div class="col-md-12">
         <h2>Categories</h2>
         <hr/>
-        {{#each categories}}
-        <p>{{this.id}} {{this.category}}</p>
-        {{/each}}
+        <div class="table-response">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Category ID</th>
+                        <th>Category Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each categories}}
+                    <tr>
+                        <td><a href="/posts?category={{this.id}}">{{this.id}}</a></td>
+                        <td><a href="/posts?category={{this.id}}">{{this.category}}</a></td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
     </div>
+    {{#unless categories}}
+    <div class="col-md-12 text-center">
+        <strong>{{message}}</strong>
+    </div>
+    {{/unless}}
 </div>
