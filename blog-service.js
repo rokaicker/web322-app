@@ -9,9 +9,25 @@ var sequelize = new Sequelize('d3r91ar12fb75v', 'qrnjbgtcvuqffg','91d8eae680b368
     query: {raw:true}
 });
 
+var Post = sequelize.define('Post', {
+    body: Sequelize.TEXT,
+    title: Sequelize.STRING,
+    postDate: Sequelize.DATE,
+    featureImage: Sequelize.STRING,
+    published: Sequelize.BOOLEAN
+});
+
+var Category = sequelize.define('Category', {
+    category: Sequelize.STRING
+});
+
+Post.belongsTo(Category, {foreignKey: 'category'});
+
 module.exports.initialize = () => {
     return new Promise ((resolve,reject) => {
-        reject();
+        sequelize.sync()
+        .then(resolve('database sync successful'))
+        .catch(reject('unable to sync the database'));
     });
 };
 
