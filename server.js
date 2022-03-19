@@ -218,7 +218,6 @@ app.get("/posts", (req,res) => {
                 res.render("posts", {message: "no results"});
             }
         }).catch((err) => {
-            //res.json({messge: err});
             res.render("posts",{message:err});
         })
     } else if(req.query.minDate){
@@ -229,7 +228,6 @@ app.get("/posts", (req,res) => {
                 res.render("posts", {message: "no results"});
             }
         }).catch((err) => {
-            //res.json({message: err});
             res.render("posts",{message:err});
         })
     } else {
@@ -240,7 +238,6 @@ app.get("/posts", (req,res) => {
                 res.render("posts", {message: "no results"});
             }
         }).catch((err) => {
-            //res.json({message: err});
             res.render("posts",{message:err});
         })
     }
@@ -258,8 +255,11 @@ app.get("/posts:value",(req,res) => {
 // This will fetch the different post categories
 app.get("/categories", (req,res) => {
     blogService.getCategories().then((data) => {
-        //res.json(data);
-        res.render("categories",{categories:data});
+        if (data.length > 0){
+            res.render("categories", {categories:data});
+        } else {
+            res.render("categories", {message: "no results"});
+        }
     }).catch((err) => {
         //res.json({message: err});
         res.render("categories",{message:err});
