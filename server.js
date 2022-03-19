@@ -256,13 +256,13 @@ app.get("/posts:value",(req,res) => {
 // This will fetch the different post categories
 app.get("/categories", (req,res) => {
     blogService.getCategories().then((data) => {
+        console.log(data.length);
         if (data.length > 0){
-            res.render("categories", {categories:data});
+            res.render("categories", {categories: data});
         } else {
             res.render("categories", {message: "no results"});
         }
     }).catch((err) => {
-        //res.json({message: err});
         res.render("categories",{message:err});
     })
 });
@@ -270,7 +270,7 @@ app.get("/categories", (req,res) => {
 // This will simply send the addPost.html file to the /posts/add route
 app.get("/posts/add", (req,res) => {
     blogService.getCategories()
-    .then((data) => res.render("addPost", {categories:data}))
+    .then((data) => res.render("addPost", {categories: data}))
     .catch((err) => res.render("addPost", {categories: []}));
 });
 
