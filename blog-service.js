@@ -54,7 +54,14 @@ module.exports.getPublishedPosts = () => {
 
 module.exports.getPublishedPostsByCategory = (category) => {
     return new Promise((resolve,reject) => {
-        reject();
+        Post.findAll({
+            where: {
+                published: true,
+                category: category
+            }
+        })
+        .then((data) => resolve(data))
+        .catch(reject('no results returned'));
     });
 };
 
