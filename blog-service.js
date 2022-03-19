@@ -35,8 +35,8 @@ module.exports.initialize = () => {
 module.exports.getAllPosts = () => {
     return new Promise ((resolve, reject) => {
         Post.findAll()
-        .then((data) => resolve(data))
-        .catch(reject('no results returned'))
+        .then(data => resolve(data))
+        .catch(err => reject('no results returned'))
     });
 };
 
@@ -47,8 +47,8 @@ module.exports.getPublishedPosts = () => {
                 published: true
             }
         })
-        .then((data) => resolve(data))
-        .catch(reject('no results returned'));
+        .then(data => resolve(data))
+        .catch(err => reject('no results returned'));
     });
 };
 
@@ -60,16 +60,17 @@ module.exports.getPublishedPostsByCategory = (category) => {
                 category: category
             }
         })
-        .then((data) => resolve(data))
-        .catch(reject('no results returned'));
+        .then(data => resolve(data))
+        .catch(err => reject('no results returned'));
     });
 };
 
 module.exports.getCategories = () => {
     return new Promise((resolve,reject) => {
         Category.findAll()
-        .then((data) => resolve(data))
-        .catch(reject('no results returned'));
+        .then(data => resolve(data))
+        .catch(err => reject('no results returned'));
+        //.catch(reject('no results returned'));
     });
 };
 
@@ -108,8 +109,8 @@ module.exports.getPostsByCategory = (category) => {
                 category: category
             }
         })
-        .then((data) => resolve(data))
-        .catch(reject('no results returned'))
+        .then(data => resolve(data))
+        .catch(err => reject('no results returned'));
     });
 };
 
@@ -123,8 +124,8 @@ module.exports.getPostsByMinDate = (minDateStr) => {
                 }
             }
         })
-        .then((data) => resolve(data))
-        .catch(reject('no results returned'))
+        .then(data => resolve(data))
+        .catch(err => reject('no results returned'));
     });
 };
 
@@ -135,8 +136,8 @@ module.exports.getPostById = (id) => {
                 id: id
             }
         })
-        .then((data) => resolve(data))
-        .catch(reject('no results returned'))
+        .then(data => resolve(data))
+        .catch(err => reject('no results returned'))
     });
 };
 
