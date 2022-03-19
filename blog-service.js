@@ -60,7 +60,16 @@ module.exports.getCategories = () => {
 
 module.exports.addPost = (postData) => {
     return new Promise((resolve,reject) => {
-        reject();
+        postData.published = postData.published ? true : false;
+        for (const prop in postData){
+            if (postData[prop] === "") {
+                postData[prop] = null;
+            }
+        }
+        postData.postDate = new Date();
+        Post.create(postData)
+        .then(resolve('post successfully added'))
+        .catch(reject('unable to create post'));
     });
 };
 
