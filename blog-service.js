@@ -25,15 +25,18 @@ Post.belongsTo(Category, {foreignKey: 'category'});
 
 module.exports.initialize = () => {
     return new Promise ((resolve,reject) => {
-        sequelize.sync()
+        sequelize
+        .sync()
         .then(resolve('database sync successful'))
-        .catch(reject('unable to sync the database'));
+        .catch((err) => reject('unable to sync the database',err));
     });
 };
 
 module.exports.getAllPosts = () => {
     return new Promise ((resolve, reject) => {
-        reject();
+        Post.findAll()
+        .then((data) => resolve(data))
+        .catch(reject('no results returned'))
     });
 };
 
