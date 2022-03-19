@@ -88,6 +88,19 @@ module.exports.addPost = (postData) => {
     });
 };
 
+module.exports.addCategory = (categoryData) => {
+    return new Promise((resolve,reject) => {
+        for (const prop in categoryData){
+            if (categoryData[prop] === ""){
+                categoryData[prop] = null;
+            }
+        }
+        Category.create(categoryData)
+        .then(resolve('category created successfully'))
+        .catch(reject('unable to create category'));
+    });
+}
+
 module.exports.getPostsByCategory = (category) => {
     return new Promise((resolve,reject) => {
         Post.findAll({
@@ -125,4 +138,28 @@ module.exports.getPostById = (id) => {
         .then((data) => resolve(data))
         .catch(reject('no results returned'))
     });
+};
+
+module.exports.deleteCategoryById = (id) => {
+    return new Promise((resolve,reject) => {
+        Category.destroy({
+            where: {
+                id: id
+            }
+        })
+        .then(resolve('Category Deleted'))
+        .catch(reject('Unable to delete category'))
+    });
+};
+
+module.exports.deletePostById = (id) => {
+    return new Promise((resolve,reject) => {
+        Post.destroy({
+            where: {
+                id: id
+            }
+        })
+    })
+    .then(resolve('Post deleted'))
+    .catch(reject('Unable to delete post'))
 };
