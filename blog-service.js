@@ -42,7 +42,13 @@ module.exports.getAllPosts = () => {
 
 module.exports.getPublishedPosts = () => {
     return new Promise ((resolve, reject) => {
-        reject();
+        Post.findAll({
+            where: {
+                published: true
+            }
+        })
+        .then((data) => resolve(data))
+        .catch(reject('no results returned'));
     });
 };
 
