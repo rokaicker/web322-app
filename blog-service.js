@@ -66,7 +66,13 @@ module.exports.addPost = (postData) => {
 
 module.exports.getPostsByCategory = (category) => {
     return new Promise((resolve,reject) => {
-        reject();
+        Post.findAll({
+            where: {
+                category: category
+            }
+        })
+        .then((data) => resolve(data))
+        .catch(reject('no results returned'))
     });
 };
 
