@@ -269,7 +269,9 @@ app.get("/categories", (req,res) => {
 
 // This will simply send the addPost.html file to the /posts/add route
 app.get("/posts/add", (req,res) => {
-    res.render(path.join(__dirname, "/views/addPost.hbs"));
+    blogService.getCategories()
+    .then((data) => res.render("addPost", {categories:data}))
+    .catch((err) => res.render("addPost", {categories: []}));
 });
 
 app.post("/posts/add",upload.single("featureImage"), (req,res) => {
