@@ -13,7 +13,8 @@
 
 const express = require("express");
 const app = express();
-app.use(express.static("public")); // Allows us to declare a folder as "static" --> unchanging files that are required for the site content. 
+app.use(express.static("public"));              // Allows us to declare a folder as "static" --> unchanging files that are required for the site content. 
+app.use(express.urlencoded({extended:true}));
 
 const path = require("path");
 const blogService = require(__dirname + "/blog-service.js")
@@ -297,7 +298,18 @@ app.post("/posts/add",upload.single("featureImage"), (req,res) => {
     }).then(() => {
         res.redirect("/posts");
     });
-})
+});
+
+app.get("/categories/add", (req,res) => {
+    res.render(path.join(__dirname, "/views/addCategory.hbs"));
+});
+
+app.post("/categories/add", (req,res) => {
+    blogService.addCategory(req.body)
+    .then(() => {
+        res.redirect("/categories");
+    })
+});
 
 
 // Send 404 status if user is trying to go an invalid route
@@ -310,3 +322,4 @@ blogService.initialize().then(() => {
 }).catch((error) => {
     console.error(err);                 // Displays error if there is one
 });
+
