@@ -5,12 +5,13 @@
             <a href="/categories/add" class="btn btn-success pull-right">Add Category</a
         </h2>
         <hr/>
-        <div class="table-response">
+        <div class="table-responsive">
             <table class="table">
                 <thead>
                     <tr>
                         <th>Category ID</th>
                         <th>Category Name</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -18,6 +19,7 @@
                     <tr>
                         <td><a href="/posts?category={{this.id}}">{{this.id}}</a></td>
                         <td><a href="/posts?category={{this.id}}">{{this.category}}</a></td>
+                        <td><a class=""btn btn-danger href=""/categories/delete/{{this.id}}>remove</a></td>
                     </tr>
                     {{/each}}
                 </tbody>
