@@ -295,10 +295,14 @@ app.post("/posts/add",upload.single("featureImage"), (req,res) => {
     upload(req).then((uploaded)=>{
         req.body.featureImage = uploaded.url;
         blogService.addPost(req.body);
-    }).then(() => {
-        res.redirect("/posts");
-    });
+    }).then(res.redirect("/posts"));
 });
+
+app.get("/posts/delete/:id", (req,res) => {
+    blogService.deletePostById(req.params.id)
+    .then(res.redirect("/posts"))
+    .catch((err) => res.status(500).send("Unable to Remove Post / Post not found"));
+})
 
 app.get("/categories/add", (req,res) => {
     res.render(path.join(__dirname, "/views/addCategory.hbs"));
@@ -306,10 +310,14 @@ app.get("/categories/add", (req,res) => {
 
 app.post("/categories/add", (req,res) => {
     blogService.addCategory(req.body)
-    .then(() => {
-        res.redirect("/categories");
-    })
+    .then(res.redirect("/categories"));
 });
+
+app.get("/categories/delete/:id", (req,res) => {
+    blogService.deleteCategoryById(req.params.id)
+    .then(res.redirect("/categories"))
+    .catch((err) => res.status(500).send("Unable to Remove Category / Category not found"));
+})
 
 
 // Send 404 status if user is trying to go an invalid route
