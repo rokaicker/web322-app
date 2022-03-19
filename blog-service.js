@@ -93,6 +93,12 @@ module.exports.getPostsByMinDate = (minDateStr) => {
 
 module.exports.getPostById = (id) => {
     return new Promise((resolve,reject) => {
-        reject();
+        Post.findAll({
+            where: {
+                id: id
+            }
+        })
+        .then((data) => resolve(data))
+        .catch(reject('no results returned'))
     });
 };
