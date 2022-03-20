@@ -5,7 +5,7 @@
 * 
 *  Name: Rohan Kaicker Student ID: 119070217 Date: March 13, 2022
 *
-*  Online (Heroku) URL: https://arcane-headland-60683.herokuapp.com/blog 
+*  Online (Heroku) URL:  https://dry-earth-36179.herokuapp.com/blog
 *
 *  GitHub Repository URL: https://github.com/rokaicker/web322-app
 *
