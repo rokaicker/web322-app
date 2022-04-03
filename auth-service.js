@@ -31,3 +31,25 @@ module.exports.initialize = () => {
     });
 };
 
+module.exports.registerUser = (userData) => {
+    return new Promise((resolve,reject) => {
+        // Reject promise if .password does not match .password2
+        if (userData.password != userData.password2){
+            reject("Passwords do not match");
+        } else {
+            let newUser = new User(userData);
+            newUser.save((err) => {
+                if (err){
+                    // Error code 11000 check (Duplicate Key)
+                    if (err.code == 11000){
+                        reject("Username already taken");
+                    } else {
+                        reject("There was an error creating the user: " + err);
+                    }
+                } else {
+                    resolve();
+                }
+            });
+        }
+    });
+};
