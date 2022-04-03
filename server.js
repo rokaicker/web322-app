@@ -11,13 +11,16 @@
 *
 ********************************************************************************/ 
 
+const authData = require(__dirname + "/auth-service.js");
+
+
 const express = require("express");
 const app = express();
 app.use(express.static("public"));              // Allows us to declare a folder as "static" --> unchanging files that are required for the site content. 
 app.use(express.urlencoded({extended:true}));
 
 const path = require("path");
-const blogService = require(__dirname + "/blog-service.js")
+const blogService = require(__dirname + "/blog-service.js");
 var HTTP_PORT = process.env.PORT || 8080;
 
 // Multer setup
