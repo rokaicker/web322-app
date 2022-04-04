@@ -54,7 +54,7 @@ app.engine('.hbs', exphbs.engine({
     defaultLayout: 'main',
     helpers : {
         navLink: function(url, options){
-            return '<li' + ((url == app.locals.activeRoute) ? 'class="active"' : '') + '><a href="' + url + '">' + options.fn(this) + '</a></li>';
+            return '<li' + ((url == app.locals.activeRoute) ? ' class="active" ' : '') + '><a href="' + url + '">' + options.fn(this) + '</a></li>';
         },
         equal: function(lvalue,rvalue,options){
             if (arguments.length < 3)
@@ -62,7 +62,7 @@ app.engine('.hbs', exphbs.engine({
             if (lvalue != rvalue) {
                 return options.inverse(this);
             } else {
-                return options.fn(this);
+                return options.fn(this);S
             }
         },
         safeHTML: function(context){
