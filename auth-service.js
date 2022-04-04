@@ -1,8 +1,11 @@
-// Mongoose setup
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+// Required Modules
+const mongoose = require("mongoose");   // To use mongoDB
+const bcrypt = require("bcryptjs");     // To be able to encrypt passwords
+
+
 
 // Schema Setup
+var Schema = mongoose.Schema;
 var assignSchema = new Schema({
     "userName" : {
         "type": String,
@@ -37,19 +40,26 @@ module.exports.registerUser = (userData) => {
         if (userData.password != userData.password2){
             reject("Passwords do not match");
         } else {
-            let newUser = new User(userData);
-            newUser.save((err) => {
-                if (err){
-                    // Error code 11000 check (Duplicate Key)
-                    if (err.code == 11000){
-                        reject("Username already taken");
+            bcrypt.hash(userData.password,10)
+            .then((hash) => {
+                userData.password = hash;
+                let newUser = new User(userData);
+                newUser.save((err) => {
+                    if (err){
+                        // Error code 11000 check (Duplicate Key)
+                        if (err.code == 11000){
+                            reject("Username already taken");
+                        } else {
+                            reject("There was an error creating the user: " + err);
+                        }
                     } else {
-                        reject("There was an error creating the user: " + err);
+                        resolve();
                     }
-                } else {
-                    resolve();
-                }
-            });
+                });
+            })
+            .catch((err) => {
+                reject("There was an error encrypting the password");
+            })
         }
     });
 };
@@ -63,17 +73,26 @@ module.exports.checkUser = (userData) => {
             // Reject promise if users array is empty or if passwords don't match
             if (users.length == 0){
                 reject("Unable to find user: " + userData.userName);
-            } else if (users[0].password != userData.password){
+            } 
+            // Below code replaced with hash comparison
+            /*else if (users[0].password != userData.password){
                 reject("Incorrect Password for user: " + userData.userName);
-            }
-            users[0].loginHistory.push({dateTime: (new Date()).toString, userAgent: userData.userAgent});
-            User.updateOne({userName: users[0].userName}, {$set : {loginHistory: users[0].loginHistory}})
-            .exec()
-            .then(() => {
-                resolve(users[0]);
-            })
-            .catch((err) => {
-                reject("There was an error verifying the user: " + err);
+            }*/
+            bcrypt.compare(userData.password, users[0].password)
+            .then((result) => {
+                if (result === true){
+                    users[0].loginHistory.push({dateTime: (new Date()).toString, userAgent: userData.userAgent});
+                    User.updateOne({userName: users[0].userName}, {$set : {loginHistory: users[0].loginHistory}})
+                    .exec()
+                    .then(() => {
+                        resolve(users[0]);
+                    })
+                    .catch((err) => {
+                        reject("There was an error verifying the user: " + err);
+                    })
+                } else {
+                    reject("Incorrect Password for user: " + userData.userName);
+                }
             })
         })
         .catch(() => {
