@@ -13,6 +13,26 @@
 
 const authData = require(__dirname + "/auth-service.js");
 const clientSessions = require("client-sessions");
+// Client Sessions middleware setup
+app.use(clientSessions({
+    cookieName: "session",
+    secret: "rohan_web322_assign6",
+    duration: 2 * 60 * 1000,    // 2 minutes original duration
+    activeDuration: 60 * 1000   // 1 minute extension
+}));
+// Below middleware ensures templates have access to session object
+app.use((req,res,next) => {
+    res.locals.session = req.session;
+    next();
+})
+// Below function checks if user is logged in, if not they will be redirected to /login route
+function ensureLogin(req,res,next) {
+    if(!req.session.user) {
+        res.redirect("/login");
+    } else {
+        next();
+    }
+}
 
 const express = require("express");
 const app = express();
@@ -213,7 +233,7 @@ app.get('/blog/:id', async (req, res) => {
 });
 
 // This will fetch posts either based on category, date, or all posts 
-app.get("/posts", (req,res) => {
+app.get("/posts", ensureLogin, (req,res) => {
     if (req.query.category){
         blogService.getPostsByCategory(req.query.category).then((data) => {
             if (data.length > 0){
@@ -248,7 +268,7 @@ app.get("/posts", (req,res) => {
 });
 
 // This will get posts based on the post ID value
-app.get("/posts:value",(req,res) => {
+app.get("/posts:value", ensureLogin, (req,res) => {
     blogService.getPostById(req.params.value).then((data) => {
         res.json({data});
     }).catch((err) => {
@@ -257,7 +277,7 @@ app.get("/posts:value",(req,res) => {
 })
 
 // This will fetch the different post categories
-app.get("/categories", (req,res) => {
+app.get("/categories", ensureLogin, (req,res) => {
     blogService.getCategories().then((data) => {
         console.log(data.length);
         if (data.length > 0){
@@ -271,13 +291,13 @@ app.get("/categories", (req,res) => {
 });
 
 // This will simply send the addPost.html file to the /posts/add route
-app.get("/posts/add", (req,res) => {
+app.get("/posts/add", ensureLogin, (req,res) => {
     blogService.getCategories()
     .then((data) => res.render("addPost", {categories: data}))
     .catch((err) => res.render("addPost", {categories: []}));
 });
 
-app.post("/posts/add",upload.single("featureImage"), (req,res) => {
+app.post("/posts/add", ensureLogin, upload.single("featureImage"), (req,res) => {
     let streamUpload = (req) => {
         return new Promise((resolve,reject) => {
             let stream = cloudinary.uploader.upload_stream(
@@ -303,22 +323,22 @@ app.post("/posts/add",upload.single("featureImage"), (req,res) => {
     }).then(res.redirect("/posts"));
 });
 
-app.get("/posts/delete/:id", (req,res) => {
+app.get("/posts/delete/:id", ensureLogin, (req,res) => {
     blogService.deletePostById(req.params.id)
     .then(res.redirect("/posts"))
     .catch((err) => res.status(500).send("Unable to Remove Post / Post not found"));
 })
 
-app.get("/categories/add", (req,res) => {
+app.get("/categories/add", ensureLogin, (req,res) => {
     res.render(path.join(__dirname, "/views/addCategory.hbs"));
 });
 
-app.post("/categories/add", (req,res) => {
+app.post("/categories/add", ensureLogin, (req,res) => {
     blogService.addCategory(req.body)
     .then(res.redirect("/categories"));
 });
 
-app.get("/categories/delete/:id", (req,res) => {
+app.get("/categories/delete/:id", ensureLogin, (req,res) => {
     blogService.deleteCategoryById(req.params.id)
     .then(res.redirect("/categories"))
     .catch((err) => res.status(500).send("Unable to Remove Category / Category not found"));
