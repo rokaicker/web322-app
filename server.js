@@ -32,7 +32,7 @@ app.use(express.static("public"));              // Allows us to declare a folder
 app.use(express.urlencoded({extended:true}));   // Allows us to recognize incoming objects as strings/ arrays
 app.use(function(req,res,next){                 // Fixes the display of the navigation bar based on the current active route
     let route = req.path.substring(1);
-    app.locals.activeRoute = (route=="/") ? "/" : "/" + route.replace(/\/(.*)/,"");
+    app.locals.activeRoute = "/" + (isNaN(route.split('/')[1]) ? route.replace(/\/(?!.*)/, "") : route.replace(/\/(.*)/, ""));
     app.locals.viewingCategory = req.query.category;
     next();
 });
