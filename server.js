@@ -330,7 +330,9 @@ app.use((req,res) => {
     res.status(404).render("404");
 });
 
-blogService.initialize().then(() => {
+blogService.initialize()
+.then(authData.initialize())
+.then(() => {
     app.listen(HTTP_PORT, onHttpStart); // Displays port the server is listening on. Callback function "onHttpStart" is called once the "app" starts listening to the port.
 }).catch((error) => {
     console.error(err);                 // Displays error if there is one
