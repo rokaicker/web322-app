@@ -53,3 +53,31 @@ module.exports.registerUser = (userData) => {
         }
     });
 };
+
+module.exports.checkUser = (userData) => {
+    return new Promise((resolve,reject) => {
+        // find() method to find same username in database
+        User.find({userName: userData.userName})
+        .exec()
+        .then((users) => {
+            // Reject promise if users array is empty or if passwords don't match
+            if (users.length == 0){
+                reject("Unable to find user: " + userData.userName);
+            } else if (users[0].password != userData.password){
+                reject("Incorrect Password for user: " + userData.userName);
+            }
+            users[0].loginHistory.push({dateTime: (new Date()).toString, userAgent: userData.userAgent});
+            User.updateOne({userName: users[0].userName}, {$set : {loginHistory: users[0].loginHistory}})
+            .exec()
+            .then(() => {
+                resolve(users[0]);
+            })
+            .catch((err) => {
+                reject("There was an error verifying the user: " + err);
+            })
+        })
+        .catch(() => {
+            reject("Unable to find user: " + userData.userName);
+        });
+    });
+};
