@@ -324,18 +324,57 @@ app.get("/categories/delete/:id", ensureLogin, (req,res) => {
     blogService.deleteCategoryById(req.params.id)
     .then(res.redirect("/categories"))
     .catch((err) => res.status(500).send("Unable to Remove Category / Category not found"));
-})
+});
 
 
 // LOGIN / LOGOUT PAGES
+app.get("/login", (req,res) => {
+    res.render("login");
+});
 
+app.post("/login", (req,res) => {
+    req.body.userAgent = req.get('User-Agent');
+    authData.registerUser(req.body)
+    .then((user) => {
+        req.session.user = {
+            userName: user.userName,
+            email: user.email,
+            loginHistory: user.loginHistory
+        }
+        res.redirect('/posts');
+    })
+    .catch((err) => {
+        res.render("login", {errorMessage: err, userName: req.body.userName});
+    });
+});
 
+app.get("/logout", (req,res) => {
+    req.session.reset();
+    res.redirect("/");
+});
 
 // REGISTER PAGE
+app.get("/register", (req,res) => {
+    res.render("register");
+});
 
+app.post("/register", (req,res) => {
+    authData.registerUser(req.body)
+    .then(() => {
+        res.render("register", {successMessage: "User created"});
+    })
+    .catch((err) => {
+        res.render("register", {errorMessage: err, userName: req.body.userName});
+    })
+});
 
 
 // USER HISTORY PAGE
+app.get("/userHistory", ensureLogin, (req,res) => {
+    res.render("userHistory");
+});
+
+
 
 // 404 PAGE
 // Send 404 status if user is trying to go an invalid route
