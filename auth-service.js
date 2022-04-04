@@ -2,11 +2,9 @@
 const mongoose = require("mongoose");   // To use mongoDB
 const bcrypt = require("bcryptjs");     // To be able to encrypt passwords
 
-
-
 // Schema Setup
 var Schema = mongoose.Schema;
-var assignSchema = new Schema({
+var userSchema = new Schema({
     "userName" : {
         "type": String,
         "unique" : true
@@ -23,7 +21,7 @@ let User; // to be defined on new connection see initialize
 //      Otherwise the promise is rejected()
 module.exports.initialize = () => {
     return new Promise ((resolve,reject) => {
-        let db = mongoose.createConnection("mongodb+srv://rohank:322@web322.luj4c.mongodb.net/web322_assign6?retryWrites=true&w=majority");
+        let db = mongoose.createConnection("mongodb+srv://rohank:web322@web322.luj4c.mongodb.net/web322_assign6?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true });
         db.on('error', (err) => {
             reject(err);    // reject promise with provided error
         });
