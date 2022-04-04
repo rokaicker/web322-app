@@ -334,7 +334,7 @@ app.get("/login", (req,res) => {
 
 app.post("/login", (req,res) => {
     req.body.userAgent = req.get('User-Agent');
-    authData.registerUser(req.body)
+    authData.checkUser(req.body)
     .then((user) => {
         req.session.user = {
             userName: user.userName,
