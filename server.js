@@ -11,7 +11,7 @@
 *
 ********************************************************************************/ 
 // Required Modules
-const blogService = require(__dirname + "/blog-service.js");    //
+const blogService = require(__dirname + "/blog-service.js");    // Blog middleware (ex. adding/ deleting posts)
 const express = require("express");                             // Express to be used as our web framework
 const path = require("path");                                   // Provides utilties for working with file/ directory pathes
 const multer = require("multer");                               // Node.js middleware for handling multipart/form-data (primary use = uploading files)
@@ -20,7 +20,7 @@ const streamifier = require("streamifier");                     // Allows us to 
 const stripJs = require('strip-js');                            // Strips JavaScript code from HTML text (ex. for safety reasons, prevent malicious scripts from running)
 const exphbs = require('express-handlebars');                   // Express handlebars view engine 
 const { appendFileSync } = require("fs");                       // TBD
-const authData = require(__dirname + "/auth-service.js");       // 
+const authData = require(__dirname + "/auth-service.js");       // User Authentication middleware 
 const clientSessions = require("client-sessions");              // Middleware to implement sessions in cookies
 
 // Providing value for HTTP_PORT for local webserver
@@ -326,6 +326,16 @@ app.get("/categories/delete/:id", ensureLogin, (req,res) => {
     .catch((err) => res.status(500).send("Unable to Remove Category / Category not found"));
 })
 
+
+// LOGIN / LOGOUT PAGES
+
+
+
+// REGISTER PAGE
+
+
+
+// USER HISTORY PAGE
 
 // 404 PAGE
 // Send 404 status if user is trying to go an invalid route
