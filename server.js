@@ -12,7 +12,7 @@
 ********************************************************************************/ 
 
 const authData = require(__dirname + "/auth-service.js");
-
+const clientSessions = require("client-sessions");
 
 const express = require("express");
 const app = express();
