@@ -22,6 +22,7 @@ const exphbs = require('express-handlebars');                   // Express handl
 const { appendFileSync } = require("fs");                       // TBD
 const authData = require(__dirname + "/auth-service.js");       // User Authentication middleware 
 const clientSessions = require("client-sessions");              // Middleware to implement sessions in cookies
+const { equal } = require("assert");
 
 // Providing value for HTTP_PORT for local webserver
 const HTTP_PORT = process.env.PORT || 8080;
@@ -267,29 +268,43 @@ app.get("/posts/add", ensureLogin, (req,res) => {
     .catch((err) => res.render("addPost", {categories: []}));
 });
 app.post("/posts/add", ensureLogin, upload.single("featureImage"), (req,res) => {
-    let streamUpload = (req) => {
-        return new Promise((resolve,reject) => {
-            let stream = cloudinary.uploader.upload_stream(
-                (error,result) => {
-                    if (result){
-                        resolve(result);
-                    } else {
-                        reject(error);
+    if (req.file){
+        let streamUpload = (req) => {
+            return new Promise((resolve,reject) => {
+                let stream = cloudinary.uploader.upload_stream(
+                    (error,result) => {
+                        if (result){
+                            resolve(result);
+                        } else {
+                            reject(error);
+                        }
                     }
-                }
-            );
-            streamifier.createReadStream(req.file.buffer).pipe(stream);
+                );
+                streamifier.createReadStream(req.file.buffer).pipe(stream);
+            });
+        };
+        async function upload(req) {
+            let result = await streamUpload(req);
+            console.log(result);
+            return result;
+        }
+        upload(req).then((uploaded) => {
+            processPost(uploaded.url);
         });
-    };
-    async function upload(req) {
-        let result = await streamUpload(req);
-        console.log(result);
-        return result;
+    } else {
+        processPost("");
     }
-    upload(req).then((uploaded)=>{
-        req.body.featureImage = uploaded.url;
-        blogService.addPost(req.body);
-    }).then(res.redirect("/posts"));
+
+    function processPost(imageUrl){
+        req.body.featureImage = imageUrl;
+        blogService.addPost(req.body)
+        .then((post) => {
+            res.redirect("/posts");
+        })
+        .catch((err) => {
+            res.status(500).send(err);
+        })
+    }
 });
 app.get("/posts/delete/:id", ensureLogin, (req,res) => {
     blogService.deletePostById(req.params.id)
@@ -318,7 +333,10 @@ app.get("/categories/add", ensureLogin, (req,res) => {
 });
 app.post("/categories/add", ensureLogin, (req,res) => {
     blogService.addCategory(req.body)
-    .then(res.redirect("/categories"));
+    .then(res.redirect("/categories"))
+    .catch((err) => {
+        res.status(500).send(err.message);
+    })
 });
 app.get("/categories/delete/:id", ensureLogin, (req,res) => {
     blogService.deleteCategoryById(req.params.id)
