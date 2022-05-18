@@ -63,7 +63,7 @@ app.engine('.hbs', exphbs.engine({
             if (lvalue != rvalue) {
                 return options.inverse(this);
             } else {
-                return options.fn(this);S
+                return options.fn(this);
             }
         },
         safeHTML: function(context){
