@@ -11,7 +11,10 @@ var userSchema = new Schema({
     },
     password: String,
     email : String,
-    loginHistory : [{dateTime : Date}, {userAgent : String}]
+    loginHistory: [{
+        dateTime: Date, 
+        userAgent: String
+    }]
 });
 
 let User; // to be defined on new connection see initialize
