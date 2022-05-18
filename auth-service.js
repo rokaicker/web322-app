@@ -82,7 +82,7 @@ module.exports.checkUser = (userData) => {
             bcrypt.compare(userData.password, users[0].password)
             .then((result) => {
                 if (result === true){
-                    users[0].loginHistory.push({dateTime: (new Date()).toString, userAgent: userData.userAgent});
+                    users[0].loginHistory.push({dateTime: (new Date()).toString(), userAgent: userData.userAgent});
                     User.updateOne({userName: users[0].userName}, {$set : {loginHistory: users[0].loginHistory}})
                     .exec()
                     .then(() => {
