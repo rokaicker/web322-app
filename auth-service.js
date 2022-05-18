@@ -5,13 +5,13 @@ const bcrypt = require("bcryptjs");     // To be able to encrypt passwords
 // Schema Setup
 var Schema = mongoose.Schema;
 var userSchema = new Schema({
-    "userName" : {
-        "type": String,
-        "unique" : true
+    userName : {
+        type: String,
+        unique : true
     },
-    "password": String,
-    "email" : String,
-    "loginHistory" : [{"dateTime" : Date}, {"userAgent" : String}]
+    password: String,
+    email : String,
+    loginHistory : [{dateTime : Date}, {userAgent : String}]
 });
 
 let User; // to be defined on new connection see initialize
